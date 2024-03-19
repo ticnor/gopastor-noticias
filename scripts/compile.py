@@ -34,8 +34,7 @@ for fn in Path('posts').rglob('*.md'):
 
 posts.sort(reverse=True, key=lambda x: x['filename'])
 
-output = Path('dist/noticias.json')
-output.parent.mkdir(parents=True, exist_ok=True)
+output = Path('noticias.json')
 with open(output, 'w') as f:
     json.dump(posts, f)
 
