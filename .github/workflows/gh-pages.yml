@@ -1,0 +1,42 @@
+name: Push to GH pages
+
+on:
+  push:
+    branches:
+      - master
+      - main
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+
+    concurrency:
+      group: pages
+      cancel-in-progress: true
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run scripts
+        run: |
+          pip install markdown
+          python scripts/compile.py
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+      - name: Upload artifacts
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: dist/
+      - name: Deploy to GH Pages
+        id: deployment
+        uses: actions/deploy-pages@v2
