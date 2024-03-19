@@ -20,6 +20,7 @@ def image_url(url: str, md_path: Path):
 
 posts = []
 for fn in Path('posts').rglob('*.md'):
+    print("Compiling", fn)
     with open(fn) as f:
         html = md.convert(f.read())
     metadata = md.Meta
@@ -37,3 +38,5 @@ output = Path('dist/noticias.json')
 output.parent.mkdir(parents=True, exist_ok=True)
 with open(output, 'w') as f:
     json.dump(posts, f)
+
+print(len(posts), "posts written")
